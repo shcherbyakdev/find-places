@@ -22,7 +22,7 @@ $ Make POST request like :
 }
 
 ```
-to find all museums around 'radius'. 
+to find all museums around 'radius' from poin X (latitude,longitude). 
 You can do it with your own parameters
 
 endpoint:
