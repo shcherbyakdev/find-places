@@ -1,27 +1,44 @@
 'use strict';
 const request = require('request');
+const helpers = require('./helpers/helperFunctions');
 const validations = require('./helpers/validations');
-
-
+const Json2csvParser = require('json2csv').Parser;
 
 
 module.exports.getVenues = (event, context, callback) => {
 
+try{
+ const inputs = inputsData(JSON.parse(event.body));
 
-const inputs = inputsData(JSON.parse(event.body));
 
 foursquareApiData(inputs).then(function(data){
 
+const columnNames = ["Name", "City", "Street", "Latitude", "Longitude"];
+
+
+const json2csvParser = new Json2csvParser({ columnNames,quote: ' ' });
+const csv = json2csvParser.parse(data);
+
   const response = {
     statusCode: 200,
+    headers: {'Content-Type' : 'text/csv; charset=utf-8'},
     body: JSON.stringify({
-    message: data
+    message: csv
     }),
   };
   
   callback(null, response);
 
 })
+}catch(err) {
+  const response = {
+    statusCode: err.code || 500,
+    headers: { "Content-Type": "text/plain" },
+    body: String(err)
+  };
+  callback(null, response);
+}
+
 
 
 
@@ -30,7 +47,7 @@ foursquareApiData(inputs).then(function(data){
 
 // get inputs data
 
-function inputsData (data) {
+const inputsData =  function (data) {
   try {
     return {
 			venueType:  validations.validateName(data.query),
@@ -62,40 +79,13 @@ function inputsData (data) {
           ll: data.latitude + ',' + data.longitude,
          radius: data.radius,
           query: data.venueType,
-          v: currentDate()
+          v: helpers.currentDate()
       }
       }, (err, r, body) => {
-        err ? rej(err) : res(getFieldsFormApi(body));
+        err ? rej(err) : res(helpers.getFieldsFormApi(body));
       });
   
   })
   
     
   }
-
-  //get current date
-function currentDate() {
-  let date = new Date();
-
-  let dd = date.getDate();
-  if (dd < 10) dd = '0' + dd;
-
-  let mm = date.getMonth() + 1;
-  if (mm < 10) mm = '0' + mm;
-
-  var yy = date.getFullYear();
-  if (yy < 10) yy = '0' + yy;
-
-  return yy  + mm +  dd;
-}
-
-function getFieldsFormApi(bodyStr) {
-	const responseObj = JSON.parse(bodyStr);
-	return responseObj.response.groups[0].items.map(item => ({
-		Name: item.venue.name,
-		City: item.venue.location.city,
-		Street: item.venue.location.address,
-		Latitude: item.venue.location.lat,
-		Longitude: item.venue.location.lng
-	}))
-}
