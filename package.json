@@ -9,6 +9,7 @@
   "author": "Andriy Shcherbyak",
   "license": "ISC",
   "dependencies": {
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "validator": "^9.4.1"
   }
 }

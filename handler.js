@@ -1,5 +1,10 @@
 'use strict';
 const request = require('request');
+const validations = require('./helpers/validations');
+
+
+
+
 module.exports.getVenues = (event, context, callback) => {
 
 
@@ -28,11 +33,13 @@ foursquareApiData(inputs).then(function(data){
 function inputsData (data) {
   try {
     return {
-			venueType:  data.query,
-			radius:     data.radius,
-			latitude:   data.latitude,
-			longitude:  data.longitude
-		}
+			venueType:  validations.validateName(data.query),
+			radius:     validations.validateRadius(data.radius),
+			latitude:   validations.validatePoint(data.latitude),
+			longitude:  validations.validatePoint(data.longitude)
+    }
+    
+ 
   }
   catch (err) {
 		const expectedInput = 'please input correct data';
@@ -53,7 +60,7 @@ function inputsData (data) {
           client_id: 'IHPFHD2EUYEWT0SXBBCTY45W54JT4YPU2TTDYMGV5LEPCUUW',
           client_secret: 'CUYH3G2JUNOOZOHD22MRRCH4VVYDCMCBHYEMSVGCIRVRHWDC',
           ll: data.latitude + ',' + data.longitude,
-          radius: data.radius,
+         radius: data.radius,
           query: data.venueType,
           v: currentDate()
       }
