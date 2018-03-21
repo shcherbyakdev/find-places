@@ -3,6 +3,7 @@ const request = require('request');
 const helpers = require('./helpers/helperFunctions');
 const validations = require('./helpers/validations');
 const Json2csvParser = require('json2csv').Parser;
+const config = require('./config/foursquare');
 
 
 module.exports.getVenues = (event, context, callback) => {
@@ -74,8 +75,8 @@ const inputsData =  function (data) {
       url: 'https://api.foursquare.com/v2/venues/explore',
       method: 'GET',
       qs: {
-          client_id: 'IHPFHD2EUYEWT0SXBBCTY45W54JT4YPU2TTDYMGV5LEPCUUW',
-          client_secret: 'CUYH3G2JUNOOZOHD22MRRCH4VVYDCMCBHYEMSVGCIRVRHWDC',
+          client_id: config.CLIENT_ID,
+          client_secret: config.CLIENT_SECRET,
           ll: data.latitude + ',' + data.longitude,
          radius: data.radius,
           query: data.venueType,
