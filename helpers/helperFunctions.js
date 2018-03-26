@@ -88,9 +88,7 @@ exports.processInputsData =  function (data) {
           const responseCsv = {
             statusCode: 200,
             headers: {'Content-Type' : 'text/csv; charset=utf-8'},
-            body: JSON.stringify({
-            message: csv
-            }),
+            body:csv
           };
           
           return responseCsv;
