@@ -29,3 +29,4 @@ exports.validatePoint = function(point){
 	else
 		throw new Error('point X is incorrect')
 }
+
