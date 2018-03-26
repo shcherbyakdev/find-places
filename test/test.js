@@ -7,13 +7,32 @@ describe('Validation inputs',()=> {
         test('is type of name-field equals string', ()=> {
             expect(validations.validateName('museum')).toBe('museum');
          })
+         test('is trows on incorrect name', ()=> {
+            expect(()=> {
+                validations.validateName(123);
+            }).toThrow('incorrect name');
+        })
+
+
     })
     describe('radius',()=>{
-        test('is radius comvert to meters', ()=>{
+        test('is radius convert to meters', ()=>{
             expect(validations.validateRadius(100)).toBe(100000);
         })
         test('is radius number', () =>{
             expect(validations.validateRadius('100')).not.toBe(10000);
+        })
+
+        test('is trows on NaN', ()=> {
+            expect(()=> {
+                validations.validateRadius('abc');
+            }).toThrow('incorrect radius');
+        })
+
+        test('is radius negative', ()=> {
+            expect(()=> {
+                validations.validateRadius(-10);
+            }).toThrow('incorrect radius');
         })
   
    })
