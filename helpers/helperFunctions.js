@@ -77,7 +77,7 @@ exports.processInputsData =  function (data) {
       
     }
     
-    exports.responseCsvVenue = function ( data ) {
+    exports.getResponseCSVVenue = function ( data ) {
 
         const columnNames = ["Name", "City", "Street", "Latitude", "Longitude"];
 

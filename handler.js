@@ -8,7 +8,7 @@ try{
  const inputs = helpers.processInputsData(JSON.parse(event.body));
  helpers.getFoursquareApiData(inputs).then(function(data){
 
-const response = helpers.responseCsvVenue(data);
+const response = helpers.getResponseCSVVenue(data);
 
   callback(null, response);
 
@@ -21,9 +21,6 @@ const response = helpers.responseCsvVenue(data);
   };
   callback(null, response);
 }
-
-
-
 
 };
 
